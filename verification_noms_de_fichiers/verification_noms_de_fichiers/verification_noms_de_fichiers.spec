@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['verification_noms_de_fichiers.py'],
-             pathex=['D:\\BNF0017855\\Documents\\perso\\mn\\verification_noms_de_fichiers\\verification_noms_de_fichiers'],
+             pathex=['C:\\Users\\Lully\\Documents\\Hélène\\scripts\\mn\\verification_noms_de_fichiers\\verification_noms_de_fichiers'],
              binaries=[],
              datas=[],
              hiddenimports=[],
