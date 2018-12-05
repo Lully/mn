@@ -6,7 +6,7 @@
 set /p version="version: "
 pyinstaller verification_noms_de_fichiers.py
 rd /s /q build
-copy "lancer le programme de vérification de noms de fichiers.bat" dist
+copy Lancer_le_programme_de_verification_des_noms_de_fichiers.bat dist
 rename dist verification_noms_de_fichiers
-"C:\Program Files\7-Zip\7z" a -tzip ..\bin\verification_noms_de_fichiers_%version%_win64_py3.6.zip verification_noms_de_fichiers/
+"C:\Program Files\7-Zip\7z" a -tzip ..\bin\verification_noms_de_fichiers_%version%.zip verification_noms_de_fichiers/
 rd /s /q verification_noms_de_fichiers
