@@ -2,6 +2,8 @@
 
 """
 Vérification du nommage des fichiers d'un répertoire
+
+La liste des vérifications de nommage est dans la fonction check_filename()
 """
 
 import re
@@ -25,15 +27,15 @@ def check_filename(filename, output_file):
     if test is None:
         check_error = True
     # 2e test
-    if check_error is False:
+    if check_error is True:
         test = re.fullmatch("\w+\-\d+\.jpg", filename)
-        if test is None:
-            check_error = True
+        if test is not None:
+            check_error = False
     # 3e test
-    if check_error is False:
+    if check_error is True:
         test = re.fullmatch("\w+\-\d+\.TIF", filename)
-        if test is None:
-            check_error = True
+        if test is not None:
+            check_error = False
     
     if check_error:
         print("erreur de nommage : " + filename)
@@ -43,7 +45,7 @@ def check_filename(filename, output_file):
 def analyse_dir(directory_name, output_filename):
     list_files = listdir(directory_name)
     output_filepath = os.path.join(directory_name, output_filename)
-    output_file = create_file(output_filename)
+    output_file = create_file(output_filepath)
     output_file.write(f"{str(len(list_files))} noms de fichiers analysés\n")
     errors_list = []
     for filename in list_files:
@@ -58,9 +60,10 @@ def analyse_dir(directory_name, output_filename):
 
 
 if __name__ == "__main__":
-    directory_name = input("Chemin du répertoire où analyser les noms des fichiers : ")
+    directory_name = input("\nChemin du répertoire où analyser les noms des fichiers : ")
     output_filename = input("\nNom du rapport en sortie\n\
 (le fichier sera déposé dans le même répertoire): \n")
+    print("")
     if (output_filename[-4] != "."):
         output_filename = output_filename + ".txt"
     analyse_dir(directory_name, output_filename)
