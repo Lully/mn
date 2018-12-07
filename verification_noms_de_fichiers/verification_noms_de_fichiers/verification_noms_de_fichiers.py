@@ -12,6 +12,37 @@ import os.path
 
 from stdf import create_file, line2report
 
+introduction_text = """
+Ce petit logiciel fabriqué en langage de programmation Python
+aide à trouver les coquilles de nommage de vos fichiers 
+à rattacher à la base de données des collections du Mobilier national ;
+il vérifie la conformité habituelle des fichiers images sur plusieurs points
+
+il va vérifier une série de choses :
+- qu'il ne s'y trouve pas signes interdits : parenthèses, espaces, etc.
+- que tout ne soit que des lettres, chiffres, - et _
+
+Le modèle habituel est : GOB-127-001_12450.jpg
+En détaillant ses actions :
+1. il vérifie que la 1ère partie de numéro 
+   ne comporte que 8 caractères maximum
+2. la 2e partie 5 chiffres maximum
+3. la 3e partie doit avoir obligatoirement 3 chiffres
+4. la dernière partie ne doit comporter que des chiffres 
+   ou tirets et maximum 8 caractères
+5. les extensions de fichier sont limitées 
+   dans le test à .jpg, .png, .gif, .tif, .mov., mp3, .mp4
+
+Avec ceci le gros de vos erreurs potentielles peut-être la vérifié. 
+La vérification est peut-être trop stricte sur des cotes complexes, 
+mais cela aidera à détecter l'essentiel des erreurs !
+
+Bonnes vérifications ! Hélène Cavalié
+Version du 05/12/2018
+"""
+
+
+
 
 def launch_analyse(output_filepath):
     errors_list = []
@@ -93,26 +124,6 @@ a été généré dans le même dossier que vos images.")
 
 
 if __name__ == "__main__":
-    introduction_text = """
-Ce petit logiciel fabriqué en langage de programmation Python aide à trouver les coquilles de nommage de vos fichiers à rattacher à la base de données des collections du Mobilier national;  il vérifie la conformité habituelle des fichiers images sur plusieurs points
-
-il va vérifier une série de choses :
-- qu'il ne s'y trouve pas signes interdits : parenthèses, espaces, etc.
-- que tout ne soit que des lettres, chiffres, - et _
-
-Le modèle habituel est : GOB-127-001_12450.jpg
-En détaillant ses actions :
-1. il vérifie que la 1ère partie de numéro ne comporte que 8 caractères maximum
-2. la 2e partie 5 chiffres maximum
-3. la 3e partie doit avoir obligatoirement 3 chiffres
-4. la dernière partie ne doit comporter que des chiffres ou tirets et maximum 8 caractères
-5. les extensions de fichier sont limitées dans le test à .jpg, .png, .gif, .tif, .mov., mp3, .mp4
-
-Avec ceci le gros de vos erreurs potentielles peut-être la vérifié. La vérification est peut-être trop stricte sur des cotes complexes, mais cela aidera à détecter l'essentiel des erreurs !
-
-Bonnes vérifications ! Hélène Cavalié
-Version du 05/12/2018
-"""
     print("-"*20, introduction_text, "-"*20, "\n\n")
     directory_name = input("\nIndiquer le chemin du répertoire où analyser les noms des fichiers : ")
     output_filename = "rapport erreurs de nommage.txt"
