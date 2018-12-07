@@ -13,6 +13,35 @@ import os.path
 from stdf import create_file, line2report
 
 
+def launch_analyse(output_filepath):
+    errors_list = []
+    output_file = create_file(output_filepath)
+    output_file.write(f"\nRépertoire analysé : {directory_name}")
+ 
+    errors_list = analyse_dir(directory_name, errors_list, output_file)
+    if (errors_list == []):
+        output_file.write("Aucune erreur trouvée, tout est parfait")
+    else:
+        output_file.write(f"\nTotal : {str(len(errors_list))} erreur(s) de nommage constatée(s)")
+
+
+def analyse_dir(directory_name, errors_list, output_file):
+    """
+    Analyse d'un répertoire
+    """
+    list_files = listdir(directory_name)
+    output_file.write(f"\n\n{str(len(list_files))} noms de fichiers analysés\n\n")
+    for filename in list_files:
+        filename = os.path.join(directory_name, filename)
+        test_file = isFile(filename)
+        if test_file:
+            check_error, check_error_extension = check_filename(filename, output_file, errors_list)
+            if check_error or check_error_extension:
+                errors_list.append(filename)
+        else:
+            subdir_name = os.path.join(directory_name, filename)
+            analyse_dir(subdir_name, errors_list, output_file)
+    return errors_list
 
 
 def check_filename(filename, output_file, errors_list):
@@ -44,22 +73,23 @@ def check_filename(filename, output_file, errors_list):
                      f"Problème dans l'extension du fichier"], output_file)
     return check_error, check_error_extension
 
-def analyse_dir(directory_name, output_filename):
-    list_files = listdir(directory_name)
-    output_filepath = os.path.join(directory_name, output_filename)
-    output_file = create_file(output_filepath)
-    output_file.write(f"\nRépertoire analysé : {directory_name}")
-    output_file.write(f"{str(len(list_files))} noms de fichiers analysés\n\n")
-    errors_list = []
-    for filename in list_files:
-        check_error, check_error_extension = check_filename(filename, output_file, errors_list)
-        if check_error or check_error_extension:
-            errors_list.append(filename)
-    if (errors_list == []):
-        output_file.write("Aucune erreur trouvée, tout est parfait")
-    else:
-        output_file.write(f"\nTotal : {str(len(errors_list))} erreur(s) de nommage constatée(s)")
 
+def isFile(filename):
+    """
+    Si c'est un fichier : retourne True. Sinon, retourne False
+    """
+    try:
+        listdir(filename)
+        return False
+    except NotADirectoryError:
+        return True
+
+
+def eot(output_filepath):
+    print("\n\nUn fichier listant les erreurs, nommé \"rapport erreurs de nommage.txt\"\n\
+a été généré dans le même dossier que vos images.")
+    osCommandString = "notepad.exe " + output_filepath
+    os.system(osCommandString)
 
 
 if __name__ == "__main__":
@@ -85,17 +115,10 @@ Version du 05/12/2018
 """
     print("-"*20, introduction_text, "-"*20, "\n\n")
     directory_name = input("\nIndiquer le chemin du répertoire où analyser les noms des fichiers : ")
-    """output_filename = input("\nNom du rapport en sortie\n\
-(le fichier sera déposé dans le même répertoire): \n")
-    print("")
-    if (output_filename[-4] != "."):
-        output_filename = output_filename + ".txt"
-    """
     output_filename = "rapport erreurs de nommage.txt"
-    analyse_dir(directory_name, output_filename)
-    print("\n\nUn fichier listant les erreurs, nommé \"rapport erreurs de nommage.txt\"\n\
-a été généré dans le même dossier que vos images.")
     output_filepath = os.path.join(directory_name, output_filename)
-    osCommandString = "notepad.exe " + output_filepath
-    os.system(osCommandString)
+    launch_analyse(output_filepath)
+    eot(output_filepath)
+    
+
     
