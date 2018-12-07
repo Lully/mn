@@ -119,6 +119,3 @@ Version du 05/12/2018
     output_filepath = os.path.join(directory_name, output_filename)
     launch_analyse(output_filepath)
     eot(output_filepath)
-    
-
-    
