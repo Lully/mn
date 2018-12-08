@@ -2,11 +2,11 @@
 
 from tkinter import filedialog
 import tkinter as tk
-from verification_noms_de_fichiers import introduction_text
+from verification_noms_de_fichiers import *
 
-selected_directory = []
+selected_directory = [""]
 
-def formulaire_main(presentation_text):
+def formulaire_main():
     couleur_fond = "white"
     couleur_bouton = "#e1e1e1"
 
@@ -40,35 +40,30 @@ des fichiers Images pour la base de données",
         couleur_fond,
     )
 
-    directory_select_button = tk.Button(
-        frame1,
-        text="Sélectionner un répertoire",
-        command=None,
-        padx=40,
-        pady=47,
-        bg="#fefefe",
-        font="Arial 9 bold"
-    )
-    # directory_select_button.pack()
     tk.Label(frame1, bg=couleur_fond, text="\n").pack()
     launch_button = tk.Button(frame1,
-                              text="Lancer le contrôle",
-                              command=None,
-                              padx=60,
-                              pady=20,
+                              text="Lancer le contrôle\nsur le nommage\ndes fichiers",
+                              command=lambda: launch(),
+                              padx=24,
+                              pady=15,
                               bg="#9E1919",
                               fg="white",
                               font="Arial 9 bold")
     launch_button.pack()
 
-    tk.Label(zone_ok_help_cancel, justify="left",
-             text=presentation_text, pady=5,
+    tk.Label(zone_ok_help_cancel,
+             text=introduction_text, 
+             pady=5, justify="left",
              bg=couleur_fond).pack(side="left", anchor="w")
-
     tk.Label(frame_help_cancel, text="\n",
              bg=couleur_fond, font="Arial 8 normal").pack()
-
     tk.mainloop()
+
+def launch():
+    output_filepath = os.path.join(selected_directory[0], output_filename)
+    launch_analyse(output_filepath, selected_directory[0])
+    eot(output_filepath)
+
 
 
 def main_form_frames(title, couleur_fond, couleur_bordure):
@@ -115,7 +110,8 @@ def download_zone(frame, text_bouton, selected_directory,
     frame_selected = tk.Frame(frame)
     frame_selected.pack()
     display_selected = tk.Text(
-        frame_selected, height=3, width=50, bg=couleur_fond, bd=0, font="Arial 9 bold")
+        frame_selected, height=3, width=50, 
+        bg=couleur_fond, bd=0, font="Arial 9 bold")
     display_selected.pack()
     # bouton_telecharger = download_button(frame,"Sélectionner un fichier","#ffffff")
     select_filename_button = tk.Button(
@@ -140,15 +136,12 @@ def download_button(frame, text, frame_selected, text_path,
     if (selected_directory != []):
         text_path.delete(0.0, 1000.3)
     filename = filedialog.askdirectory(
-        parent=frame, title="Sélectionner un répertoire",
+        parent=frame, title="Sélectionner un répertoire"
         )
-    if (selected_directory == []):
-        selected_directory.append(filename)
-    else:
-        selected_directory[0] = filename
+    selected_directory[0] = filename
     text_path.insert(0.0, filename)
 
 
 
 if __name__ == "__main__":
-    formulaire_main(introduction_text)
+    formulaire_main()

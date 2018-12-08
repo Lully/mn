@@ -12,6 +12,10 @@ import os.path
 
 from stdf import create_file, line2report
 
+output_filename = "rapport erreurs de nommage.txt"
+extensionfile_list = ["JPG", "PNG", "TIF", "GIF", "MP4", "MP3", "MOV"]
+check_name_rule = "\w{1,8}\-\d{1,5}\-\d{3}_[\d\-]{1,8}"
+
 introduction_text = """
 Ce petit logiciel fabriqué en langage de programmation Python
 aide à trouver les coquilles de nommage de vos fichiers 
@@ -44,7 +48,7 @@ Version du 05/12/2018
 
 
 
-def launch_analyse(output_filepath):
+def launch_analyse(output_filepath, directory_name):
     errors_list = []
     output_file = create_file(output_filepath)
     output_file.write(f"\nRépertoire analysé : {directory_name}")
@@ -81,11 +85,10 @@ def check_filename(filename, output_file, errors_list):
     Si le nom n'est pas conforme, il est ajouté au fichier en sortie
     """
     check_error = False
-    extensionfile_list = ["JPG", "PNG", "TIF", "GIF", "MP4", "MP3", "MOV"]
     filename_beginning = filename[:-4]
     filename_end = filename[-3:].upper()
     # 1er test
-    test_filename = re.fullmatch("\w{1,8}\-\d{1,5}\-\d{3}_[\d\-]{1,8}", filename_beginning)
+    test_filename = re.fullmatch(check_name_rule, filename_beginning)
     if test_filename is None:
         check_error = True
     # 2e test
@@ -126,7 +129,6 @@ a été généré dans le même dossier que vos images.")
 if __name__ == "__main__":
     print("-"*20, introduction_text, "-"*20, "\n\n")
     directory_name = input("\nIndiquer le chemin du répertoire où analyser les noms des fichiers : ")
-    output_filename = "rapport erreurs de nommage.txt"
     output_filepath = os.path.join(directory_name, output_filename)
-    launch_analyse(output_filepath)
+    launch_analyse(output_filepath, directory_name)
     eot(output_filepath)

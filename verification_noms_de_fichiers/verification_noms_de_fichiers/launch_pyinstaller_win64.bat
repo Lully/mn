@@ -4,7 +4,7 @@
 :4. Supprime le répertoire initial "verification_noms_de_fichiers" 
 @echo off
 set /p version="version: "
-pyinstaller verification_noms_de_fichiers.py
+pyinstaller form.py
 rd /s /q build
 copy Lancer_le_programme_de_verification_des_noms_de_fichiers.bat dist
 rename dist verification_noms_de_fichiers
